@@ -1,27 +1,26 @@
-// Ensure the script runs after the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const registerButton = document.querySelector('.registration-form button');
+document.addEventListener('DOMContentLoaded', function() {
+    const userDashboardButton = document.getElementById('user-dashboard-btn');
 
-    registerButton.addEventListener('click', async (event) => {
-        event.preventDefault(); // Prevent the form from submitting
-
-        // Check if MetaMask is installed
+    userDashboardButton.addEventListener('click', async function(event) {
+        event.preventDefault(); // Prevent the default action of the anchor tag
         if (typeof window.ethereum !== 'undefined') {
             try {
                 // Request account access
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-                // Log the connected account
-                console.log('Connected account:', accounts[0]);
-
-                // You can now proceed to register the user, e.g., sending the form data to your backend
-                // Here you would normally handle form data submission
-
+                // Connected successfully, redirect to user dashboard
+                if (accounts.length > 0) {
+                    window.location.href = 'user_dashboard.html';
+                } else {
+                    alert('Please connect to MetaMask.');
+                }
             } catch (error) {
-                console.error('Error connecting to MetaMask:', error);
+                console.error('User denied account access or error occurred:', error);
             }
         } else {
-            alert('MetaMask is not installed. Please install it to continue.');
+            alert('MetaMask is not installed. Please install MetaMask and try again.');
+            // Redirect to userDashboard.html if MetaMask is not installed
         }
+        window.location.href = 'user_dashboard.html';
     });
 });
