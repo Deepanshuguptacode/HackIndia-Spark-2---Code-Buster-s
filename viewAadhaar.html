@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Aadhaar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>View Aadhaar</h1>
+        <button id="viewAadhaarBtn">View My Aadhaar</button>
+        <div id="aadhaarDetails" style="display: none;">
+            <p><strong>Name:</strong> <span id="aadhaarName"></span></p>
+            <p><strong>Date of Birth:</strong> <span id="aadhaarDOB"></span></p>
+            <p><strong>Gender:</strong> <span id="aadhaarGender"></span></p>
+            <p><strong>Address:</strong> <span id="aadhaarAddress"></span></p>
+            <p><strong>Approved:</strong> <span id="aadhaarApproved"></span></p>
+            <p><strong>Finalized:</strong> <span id="aadhaarFinalized"></span></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script src="viewAadhaar.js"></script>
+</body>
+</html>

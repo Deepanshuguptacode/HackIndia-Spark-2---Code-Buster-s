@@ -173,15 +173,12 @@ const contractABI = [
 		"stateMutability": "view",
 		"type": "function"
 	}
-];
+]
 
-document.getElementById('registrationForm').addEventListener('submit', async (event) => {
+document.getElementById('approveForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const name = document.getElementById('name').value;
-    const dob = document.getElementById('dob').value;
-    const gender = document.getElementById('gender').value;
-    const address = document.getElementById('address').value;
+    const userAddress = document.getElementById('userAddress').value;
 
     if (typeof window.ethereum !== 'undefined') {
         const web3 = new Web3(window.ethereum);
@@ -189,16 +186,40 @@ document.getElementById('registrationForm').addEventListener('submit', async (ev
 
         const accounts = await web3.eth.getAccounts();
         const account = accounts[0];
-        const registrationFee = web3.utils.toWei('0.001', 'ether');  // The fee amount in ether
 
-        contract.methods.registerAadhaar(name, dob, gender, address).send({ from: account, value: registrationFee })
+        contract.methods.approveAadhaar(userAddress).send({ from: account })
             .then((receipt) => {
-                console.log('Aadhaar registered successfully', receipt);
-                alert('Aadhaar registered successfully');
+                console.log('Aadhaar approved successfully', receipt);
+                alert('Aadhaar approved successfully');
             })
             .catch((error) => {
-                console.error('Error registering Aadhaar', error);
-                alert('Error registering Aadhaar. Please try again.');
+                console.error('Error approving Aadhaar', error);
+                alert('Error approving Aadhaar');
+            });
+    } else {
+        console.error('MetaMask is not installed!');
+        alert('MetaMask is not installed! Please install MetaMask and try again.');
+    }
+});
+
+document.getElementById('makeImmutableBtn').addEventListener('click', async () => {
+    const userAddress = document.getElementById('userAddress').value;
+
+    if (typeof window.ethereum !== 'undefined') {
+        const web3 = new Web3(window.ethereum);
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+        const accounts = await web3.eth.getAccounts();
+        const account = accounts[0];
+
+        contract.methods.makeImmutable(userAddress).send({ from: account })
+            .then((receipt) => {
+                console.log('Aadhaar made immutable successfully', receipt);
+                alert('Aadhaar made immutable successfully');
+            })
+            .catch((error) => {
+                console.error('Error making Aadhaar immutable', error);
+                alert('Error making Aadhaar immutable');
             });
     } else {
         console.error('MetaMask is not installed!');

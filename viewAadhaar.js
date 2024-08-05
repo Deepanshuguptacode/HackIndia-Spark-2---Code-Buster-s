@@ -175,30 +175,28 @@ const contractABI = [
 	}
 ];
 
-document.getElementById('registrationForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const name = document.getElementById('name').value;
-    const dob = document.getElementById('dob').value;
-    const gender = document.getElementById('gender').value;
-    const address = document.getElementById('address').value;
-
+document.getElementById('viewAadhaarBtn').addEventListener('click', async () => {
     if (typeof window.ethereum !== 'undefined') {
         const web3 = new Web3(window.ethereum);
         const contract = new web3.eth.Contract(contractABI, contractAddress);
 
         const accounts = await web3.eth.getAccounts();
         const account = accounts[0];
-        const registrationFee = web3.utils.toWei('0.001', 'ether');  // The fee amount in ether
 
-        contract.methods.registerAadhaar(name, dob, gender, address).send({ from: account, value: registrationFee })
-            .then((receipt) => {
-                console.log('Aadhaar registered successfully', receipt);
-                alert('Aadhaar registered successfully');
+        contract.methods.getAadhaar(account).call()
+            .then((aadhaarDetails) => {
+                document.getElementById('aadhaarName').textContent = aadhaarDetails[0];
+                document.getElementById('aadhaarDOB').textContent = aadhaarDetails[1];
+                document.getElementById('aadhaarGender').textContent = aadhaarDetails[2];
+                document.getElementById('aadhaarAddress').textContent = aadhaarDetails[3];
+                document.getElementById('aadhaarApproved').textContent = aadhaarDetails[4] ? "Yes" : "No";
+                document.getElementById('aadhaarFinalized').textContent = aadhaarDetails[5] ? "Yes" : "No";
+
+                document.getElementById('aadhaarDetails').style.display = 'block';
             })
             .catch((error) => {
-                console.error('Error registering Aadhaar', error);
-                alert('Error registering Aadhaar. Please try again.');
+                console.error('Error fetching Aadhaar details', error);
+                alert('Error fetching Aadhaar details. Please try again.');
             });
     } else {
         console.error('MetaMask is not installed!');
