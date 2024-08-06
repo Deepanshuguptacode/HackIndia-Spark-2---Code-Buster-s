@@ -214,3 +214,44 @@ document.getElementById('registrationForm').addEventListener('submit', async (ev
         alert('MetaMask is not installed! Please install MetaMask and try again.');
     }
 });
+
+document.getElementById('updateForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    // Collect form data
+    const name = document.getElementById('name').value;
+    const dob = document.getElementById('dob').value;
+    const gender = document.getElementById('gender').value;
+    const address = document.getElementById('address').value;
+
+    if (typeof window.ethereum !== 'undefined') {
+        // Create an Ethers.js provider
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const contract = new ethers.Contract(contractAddress, contractABI, provider);
+        const signer = provider.getSigner();
+
+        // Set the registration fee
+        const registrationFee = ethers.utils.parseEther('0.001'); // Convert Ether to Wei
+
+        try {
+            // Request account access
+            await provider.send("eth_requestAccounts", []);
+            const account = await signer.getAddress();
+
+            // Interact with the smart contract
+            const tx = await contract.connect(signer).registerAadhaar(name, dob, gender, address, { value: registrationFee });
+
+            // Wait for the transaction to be mined
+            await tx.wait();
+
+            console.log('Aadhaar registered successfully', tx);
+            alert('Aadhaar registered successfully');
+        } catch (error) {
+            console.error('Error registering Aadhaar', error);
+            alert('Error registering Aadhaar. Please try again.');
+        }
+    } else {
+        console.error('MetaMask is not installed!');
+        alert('MetaMask is not installed! Please install MetaMask and try again.');
+    }
+});

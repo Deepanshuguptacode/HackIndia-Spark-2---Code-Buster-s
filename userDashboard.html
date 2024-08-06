@@ -4,7 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Reset some basic elements */
+        body, h1, ul, li, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('webimg.jpg');
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+            padding: 40px;
+            border-radius: 10px;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,7 +68,6 @@
             <li><a href="updateAadhaar.html">Update Aadhaar</a></li>
             <li><a href="viewAadhaar.html">View Aadhaar</a></li>
             <li><a href="shareAadhaar.html">Share Aadhaar</a></li>
-            <li><a href="viewSharedAadhaar.html">View Shared Aadhaar</a></li>
         </ul>
     </div>
 </body>
