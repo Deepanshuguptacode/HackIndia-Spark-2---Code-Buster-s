@@ -1,4 +1,4 @@
-const contractAddress = "0xD31f44e3C93cB349BD3aFAD9725Bca50C410b27c";
+const contractAddress = "0xf54871a02639f0954De08181A91160E1232324e2";
 const contractABI = [
 	{
 		"inputs": [
@@ -168,19 +168,6 @@ const contractABI = [
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "registrationFee",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
