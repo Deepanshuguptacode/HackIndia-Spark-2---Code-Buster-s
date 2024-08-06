@@ -1,10 +1,11 @@
-const contractAddress = "0xf54871a02639f0954De08181A91160E1232324e2";
-const contractABI = [
+
+const contractAddress = "0x303C5258eE0949F7d8Dab6D6961e6ff871bB8bc6";
+const contractABI =[
 	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "user",
+				"name": "_owner",
 				"type": "address"
 			}
 		],
@@ -17,7 +18,7 @@ const contractABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "user",
+				"name": "_owner",
 				"type": "address"
 			}
 		],
@@ -30,22 +31,22 @@ const contractABI = [
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "name",
+				"name": "_name",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "dob",
+				"name": "_dob",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "gender",
+				"name": "_gender",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "userAddress",
+				"name": "_addr",
 				"type": "string"
 			}
 		],
@@ -55,66 +56,22 @@ const contractABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "newAuthority",
+				"name": "_recipient",
 				"type": "address"
 			}
 		],
-		"name": "updateAuthority",
+		"name": "shareAadhaar",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "aadharDetails",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "dob",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "gender",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "userAddress",
-				"type": "string"
-			},
-			{
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			},
-			{
-				"internalType": "bool",
-				"name": "finalized",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
 		"inputs": [],
@@ -133,11 +90,55 @@ const contractABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "user",
+				"name": "_owner",
 				"type": "address"
 			}
 		],
 		"name": "getAadhaar",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_owner",
+				"type": "address"
+			}
+		],
+		"name": "viewSharedAadhaar",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -189,8 +190,7 @@ document.getElementById('viewAadhaarBtn').addEventListener('click', async () => 
 
             // Get the current user's address
             const signer = provider.getSigner();
-            // const account = await signer.getAddress();
-			const account="0xd67004B25E547154751d6941b06f9b382349c656"
+            const account = await signer.getAddress();
 			console.log(account);
 
             // Fetch Aadhaar details

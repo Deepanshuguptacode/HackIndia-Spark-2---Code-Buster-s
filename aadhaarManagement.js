@@ -1,4 +1,4 @@
-const contractAddress = "0x303C5258eE0949F7d8Dab6D6961e6ff871bB8bc6";
+const contractAddress = '0x303C5258eE0949F7d8Dab6D6961e6ff871bB8bc6';
 const contractABI = [
 	{
 		"inputs": [
@@ -174,40 +174,64 @@ const contractABI = [
 		"type": "function"
 	}
 ]
-document.getElementById('registrationForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
 
-    // Collect form data
-    const name = document.getElementById('name').value;
-    const dob = document.getElementById('dob').value;
-    const gender = document.getElementById('gender').value;
-    const address = document.getElementById('address').value;
-
+document.getElementById('viewAadhaarBtn').addEventListener('click', async () => {
     if (typeof window.ethereum !== 'undefined') {
-        // Create an Ethers.js provider
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const contract = new ethers.Contract(contractAddress, contractABI, provider);
         const signer = provider.getSigner();
 
-        // Set the registration fee
-        const registrationFee = ethers.utils.parseEther('0.001'); // Convert Ether to Wei
-
         try {
-            // Request account access
             await provider.send("eth_requestAccounts", []);
             const account = await signer.getAddress();
 
-            // Interact with the smart contract
-            const tx = await contract.connect(signer).registerAadhaar(name, dob, gender, address, { value: registrationFee });
+            console.log("Fetching Aadhaar for account:", account);
 
-            // Wait for the transaction to be mined
+            const aadhaarDetails = await contract.getAadhaar(account);
+
+            document.getElementById('aadhaarName').textContent = aadhaarDetails[0];
+            document.getElementById('aadhaarDOB').textContent = aadhaarDetails[1];
+            document.getElementById('aadhaarGender').textContent = aadhaarDetails[2];
+            document.getElementById('aadhaarAddress').textContent = aadhaarDetails[3];
+            document.getElementById('aadhaarApproved').textContent = aadhaarDetails[4] ? "Yes" : "No";
+            document.getElementById('aadhaarFinalized').textContent = aadhaarDetails[5] ? "Yes" : "No";
+
+            document.getElementById('aadhaarDetails').style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching Aadhaar details:', error);
+            alert('Error fetching Aadhaar details. Check console for more information.');
+        }
+    } else {
+        console.error('MetaMask is not installed!');
+        alert('MetaMask is not installed! Please install MetaMask and try again.');
+    }
+});
+
+document.getElementById('shareAadhaarBtn').addEventListener('click', () => {
+    document.getElementById('shareAadhaarDiv').style.display = 'block';
+});
+
+document.getElementById('submitShare').addEventListener('click', async () => {
+    const recipient = document.getElementById('recipient').value;
+
+    if (typeof window.ethereum !== 'undefined') {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const contract = new ethers.Contract(contractAddress, contractABI, provider);
+        const signer = provider.getSigner();
+
+        try {
+            await provider.send("eth_requestAccounts", []);
+            const account = await signer.getAddress();
+
+            console.log("Sharing Aadhaar with:", recipient);
+
+            const tx = await contract.connect(signer).shareAadhaar(recipient);
             await tx.wait();
 
-            console.log('Aadhaar registered successfully', tx);
-            alert('Aadhaar registered successfully');
+            alert('Aadhaar shared successfully');
         } catch (error) {
-            console.error('Error registering Aadhaar', error);
-            alert('Error registering Aadhaar. Please try again.');
+            console.error('Error sharing Aadhaar:', error);
+            alert('Error sharing Aadhaar. Check console for more information.');
         }
     } else {
         console.error('MetaMask is not installed!');
