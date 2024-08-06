@@ -1,4 +1,4 @@
-const contractAddress = "0x9D437a1Da98559542f1F3b457B94560c0446254A";
+const contractAddress = "0xD31f44e3C93cB349BD3aFAD9725Bca50C410b27c";
 const contractABI = [
 	{
 		"inputs": [
@@ -58,6 +58,19 @@ const contractABI = [
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newAuthority",
+				"type": "address"
+			}
+		],
+		"name": "updateAuthority",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -173,31 +186,43 @@ const contractABI = [
 		"stateMutability": "view",
 		"type": "function"
 	}
-];
-
+]
 document.getElementById('viewAadhaarBtn').addEventListener('click', async () => {
     if (typeof window.ethereum !== 'undefined') {
-        const web3 = new Web3(window.ethereum);
-        const contract = new web3.eth.Contract(contractABI, contractAddress);
+        // Create an Ethers.js provider
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        // Create a new instance of the contract
+        const contract = new ethers.Contract(contractAddress, contractABI, provider);
+		console.log(contract);
 
-        const accounts = await web3.eth.getAccounts();
-        const account = accounts[0];
+        try {
+            // Request account access if needed
+            await provider.send("eth_requestAccounts", []);
 
-        contract.methods.getAadhaar(account).call()
-            .then((aadhaarDetails) => {
-                document.getElementById('aadhaarName').textContent = aadhaarDetails[0];
-                document.getElementById('aadhaarDOB').textContent = aadhaarDetails[1];
-                document.getElementById('aadhaarGender').textContent = aadhaarDetails[2];
-                document.getElementById('aadhaarAddress').textContent = aadhaarDetails[3];
-                document.getElementById('aadhaarApproved').textContent = aadhaarDetails[4] ? "Yes" : "No";
-                document.getElementById('aadhaarFinalized').textContent = aadhaarDetails[5] ? "Yes" : "No";
+            // Get the current user's address
+            const signer = provider.getSigner();
+            // const account = await signer.getAddress();
+			const account="0xd67004B25E547154751d6941b06f9b382349c656"
+			console.log(account);
 
-                document.getElementById('aadhaarDetails').style.display = 'block';
-            })
-            .catch((error) => {
-                console.error('Error fetching Aadhaar details', error);
-                alert('Error fetching Aadhaar details. Please try again.');
-            });
+            // Fetch Aadhaar details
+            const aadhaarDetails = await contract.getAadhaar(account);
+			console.log(aadhaarDetails);
+
+            // Display the details
+            document.getElementById('aadhaarName').textContent = aadhaarDetails[0];
+            document.getElementById('aadhaarDOB').textContent = aadhaarDetails[1];
+            document.getElementById('aadhaarGender').textContent = aadhaarDetails[2];
+            document.getElementById('aadhaarAddress').textContent = aadhaarDetails[3];
+            // document.getElementById('aadhaarApproved').textContent = aadhaarDetails[4] ? "Yes" : "No";
+            // document.getElementById('aadhaarFinalized').textContent = aadhaarDetails[5] ? "Yes" : "No";
+
+            document.getElementById('aadhaarDetails').style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching Aadhaar details:', error);
+            alert('Error fetching Aadhaar details. Check console for more information.');
+        }
     } else {
         console.error('MetaMask is not installed!');
         alert('MetaMask is not installed! Please install MetaMask and try again.');

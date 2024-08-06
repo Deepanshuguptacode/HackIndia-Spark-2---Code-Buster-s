@@ -1,4 +1,4 @@
-const contractAddress = "0x9D437a1Da98559542f1F3b457B94560c0446254A";
+const contractAddress = "0xD31f44e3C93cB349BD3aFAD9725Bca50C410b27c";
 const contractABI = [
 	{
 		"inputs": [
@@ -58,6 +58,19 @@ const contractABI = [
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newAuthority",
+				"type": "address"
+			}
+		],
+		"name": "updateAuthority",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -173,33 +186,43 @@ const contractABI = [
 		"stateMutability": "view",
 		"type": "function"
 	}
-];
+]
 
 document.getElementById('registrationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    // Collect form data
     const name = document.getElementById('name').value;
     const dob = document.getElementById('dob').value;
     const gender = document.getElementById('gender').value;
     const address = document.getElementById('address').value;
 
     if (typeof window.ethereum !== 'undefined') {
-        const web3 = new Web3(window.ethereum);
-        const contract = new web3.eth.Contract(contractABI, contractAddress);
+        // Create an Ethers.js provider
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const contract = new ethers.Contract(contractAddress, contractABI, provider);
+        const signer = provider.getSigner();
 
-        const accounts = await web3.eth.getAccounts();
-        const account = accounts[0];
-        const registrationFee = web3.utils.toWei('0.001', 'ether');  // The fee amount in ether
+        // Set the registration fee
+        const registrationFee = ethers.utils.parseEther('0.001'); // Convert Ether to Wei
 
-        contract.methods.registerAadhaar(name, dob, gender, address).send({ from: account, value: registrationFee })
-            .then((receipt) => {
-                console.log('Aadhaar registered successfully', receipt);
-                alert('Aadhaar registered successfully');
-            })
-            .catch((error) => {
-                console.error('Error registering Aadhaar', error);
-                alert('Error registering Aadhaar. Please try again.');
-            });
+        try {
+            // Request account access
+            await provider.send("eth_requestAccounts", []);
+            const account = await signer.getAddress();
+
+            // Interact with the smart contract
+            const tx = await contract.connect(signer).registerAadhaar(name, dob, gender, address, { value: registrationFee });
+
+            // Wait for the transaction to be mined
+            await tx.wait();
+
+            console.log('Aadhaar registered successfully', tx);
+            alert('Aadhaar registered successfully');
+        } catch (error) {
+            console.error('Error registering Aadhaar', error);
+            alert('Error registering Aadhaar. Please try again.');
+        }
     } else {
         console.error('MetaMask is not installed!');
         alert('MetaMask is not installed! Please install MetaMask and try again.');

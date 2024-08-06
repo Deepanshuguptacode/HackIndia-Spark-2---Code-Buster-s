@@ -1,4 +1,4 @@
-const contractAddress = "0x9D437a1Da98559542f1F3b457B94560c0446254A";
+const contractAddress = "0xD31f44e3C93cB349BD3aFAD9725Bca50C410b27c";
 const contractABI = [
 	{
 		"inputs": [
@@ -58,6 +58,19 @@ const contractABI = [
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newAuthority",
+				"type": "address"
+			}
+		],
+		"name": "updateAuthority",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -173,7 +186,7 @@ const contractABI = [
 		"stateMutability": "view",
 		"type": "function"
 	}
-]
+];
 
 document.getElementById('approveForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -202,7 +215,7 @@ document.getElementById('approveForm').addEventListener('submit', async (event) 
     }
 });
 
-document.getElementById('makeImmutableBtn').addEventListener('click', async () => {
+document.getElementById('finalizeBtn').addEventListener('click', async () => {
     const userAddress = document.getElementById('userAddress').value;
 
     if (typeof window.ethereum !== 'undefined') {
@@ -212,14 +225,14 @@ document.getElementById('makeImmutableBtn').addEventListener('click', async () =
         const accounts = await web3.eth.getAccounts();
         const account = accounts[0];
 
-        contract.methods.makeImmutable(userAddress).send({ from: account })
+        contract.methods.finalizeAadhaar(userAddress).send({ from: account })
             .then((receipt) => {
-                console.log('Aadhaar made immutable successfully', receipt);
-                alert('Aadhaar made immutable successfully');
+                console.log('Aadhaar finalized successfully', receipt);
+                alert('Aadhaar finalized successfully');
             })
             .catch((error) => {
-                console.error('Error making Aadhaar immutable', error);
-                alert('Error making Aadhaar immutable');
+                console.error('Error finalizing Aadhaar', error);
+                alert('Error finalizing Aadhaar');
             });
     } else {
         console.error('MetaMask is not installed!');
