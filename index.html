@@ -7,12 +7,53 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Web3 Aadhaar</h1>
-        <button id="userDashboardBtn">User Dashboard</button>
-        <button id="adminDashboardBtn">Admin Dashboard</button>
-    </div>
-
+    <header>
+        <div class="container">
+            <h1>Welcome to Web3 Aadhaar</h1>
+            <nav>
+                <ul>
+                    <li><a href="#intro">Intro</a></li>
+                    <li><a href="#what-is-it">What is Web3?</a></li>
+                    <li><a href="#how-it-works">How it Works</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section id="intro" class="section">
+        <div class="container">
+            <h2>Introduction</h2>
+            <p>Web3 Aadhaar is a decentralized application (dApp) that leverages blockchain technology to provide a secure, user-controlled digital identity system. Our platform aims to enhance transparency, security, and accessibility in digital identity management.</p>
+        </div>
+    </section>
+    
+    <section id="what-is-it" class="section">
+        <div class="container">
+            <h2>What is Web3?</h2>
+            <p>Web3 represents the next generation of the internet, characterized by decentralized protocols and technologies. Unlike traditional Web2, where data is stored on centralized servers, Web3 utilizes blockchain technology to distribute data across a network of nodes, empowering users with greater control over their digital identities and assets.</p>
+        </div>
+    </section>
+    
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <h2>How It Works</h2>
+            <p>Web3 Aadhaar works by integrating blockchain technology with identity management. Users create a digital identity on the blockchain, which is then verified and secured through cryptographic methods. This decentralized approach ensures that user data is protected from unauthorized access and tampering.</p>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container">
+            <button id="userDashboardBtn">User Dashboard</button>
+            <button id="adminDashboardBtn">Admin Dashboard</button>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Web3 Aadhaar. All rights reserved.</p>
+        </div>
+    </footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
     <script src="index.js"></script>
 </body>
